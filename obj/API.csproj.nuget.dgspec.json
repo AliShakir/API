@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\MyPractice\\DatingApp\\API\\API.csproj": {}
+    "E:\\MyPractice\\DatingApp\\api\\API.csproj": {}
   },
   "projects": {
-    "E:\\MyPractice\\DatingApp\\API\\API.csproj": {
+    "E:\\MyPractice\\DatingApp\\api\\API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\MyPractice\\DatingApp\\API\\API.csproj",
+        "projectUniqueName": "E:\\MyPractice\\DatingApp\\api\\API.csproj",
         "projectName": "API",
-        "projectPath": "E:\\MyPractice\\DatingApp\\API\\API.csproj",
+        "projectPath": "E:\\MyPractice\\DatingApp\\api\\API.csproj",
         "packagesPath": "C:\\Users\\Shakir\\.nuget\\packages\\",
-        "outputPath": "E:\\MyPractice\\DatingApp\\API\\obj\\",
+        "outputPath": "E:\\MyPractice\\DatingApp\\api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Shakir\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -40,6 +40,18 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "dependencies": {
+            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[11.0.0, )"
+            },
+            "CloudinaryDotNet": {
+              "target": "Package",
+              "version": "[1.18.0, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[5.0.0, )"
@@ -57,6 +69,10 @@
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[5.6.3, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[6.17.0, )"
             }
           },
           "imports": [
