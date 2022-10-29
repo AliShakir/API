@@ -26,7 +26,7 @@ namespace API.Services.Implementations
 
         public async Task<MemberDto> GetMemberAsync(string username)
         {
-            return await _context.User
+            return await _context.Users
                 .Where(c => c.UserName == username)
                 .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
@@ -34,7 +34,7 @@ namespace API.Services.Implementations
 
         public async Task<PagedList<MemberDto>> GetMembersAsync(UserParams userParams)
         {
-            var query = _context.User.AsQueryable();
+            var query = _context.Users.AsQueryable();
             query = query.Where(u => u.UserName != userParams.CurrentUsername);
             query = query.Where(u => u.Gender == userParams.Gender);
 
@@ -54,19 +54,19 @@ namespace API.Services.Implementations
 
         public async Task<AppUser> GetUserByIdAsync(int id)
         {
-            return await _context.User.FindAsync(id);
+            return await _context.Users.FindAsync(id);
         }
 
         public Task<AppUser> GetUserByUsernameAsync(string username)
         {
-            return _context.User
+            return _context.Users
             .Include(p => p.Photos)
             .SingleOrDefaultAsync(x => x.UserName == username);
         }
 
         public async Task<IEnumerable<AppUser>> GetUsersAsync()
         {
-            return await _context.User
+            return await _context.Users
             .Include(p => p.Photos)
             .ToListAsync();
         }

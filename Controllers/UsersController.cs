@@ -1,20 +1,15 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
-using API.Data;
 using API.DTOs;
 using API.Entities;
 using API.Extensions;
 using API.Helpers;
-using API.Services.Implementations;
 using API.Services.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
@@ -31,20 +26,19 @@ namespace API.Controllers
             _photoService = photoService;
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers([FromQuery]UserParams userParams)
+        public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers([FromQuery] UserParams userParams)
         {
             var user = await _userService.GetUserByUsernameAsync(User.GetUsername());
             userParams.CurrentUsername = user.UserName;
-            if(string.IsNullOrEmpty(userParams.Gender))
+            if (string.IsNullOrEmpty(userParams.Gender))
                 userParams.Gender = user.Gender == "male" ? "female" : "male";
-                
+
             var users = await _userService.GetMembersAsync(userParams);
 
-            Response.AddPaginationHeader(users.CurrentPage,users.PageSize,users.TotalCount,users.TotalPages);
+            Response.AddPaginationHeader(users.CurrentPage, users.PageSize, users.TotalCount, users.TotalPages);
 
             return Ok(users);
         }
-
         [HttpGet("{username}", Name = "GetUser")]
         public async Task<ActionResult<MemberDto>> GetUser(string username)
         {
@@ -102,12 +96,12 @@ namespace API.Controllers
             if (photo.IsMain) return BadRequest("This is already your main photo");
 
             var currentMain = user.Photos.FirstOrDefault(x => x.IsMain);
-            
+
             if (currentMain != null) currentMain.IsMain = false;
             photo.IsMain = true;
-            
+
             if (await _userService.SaveAllAsync()) return NoContent();
-            
+
             return BadRequest("Faild to set main photo");
         }
         [HttpDelete("delete-photo/{photoId}")]
@@ -117,21 +111,21 @@ namespace API.Controllers
 
             var photo = user.Photos.FirstOrDefault(x => x.Id == photoId);
 
-            if(photo == null) return NotFound();
+            if (photo == null) return NotFound();
 
-            if(photo.IsMain) return BadRequest("You cannot delete your main photo");
+            if (photo.IsMain) return BadRequest("You cannot delete your main photo");
 
-            if(photo.PublicId != null)
+            if (photo.PublicId != null)
             {
                 var result = await _photoService.DeletePhotoAsync(photo.PublicId);
-                
-                if(result.Error != null) return BadRequest(result.Error.Message);
+
+                if (result.Error != null) return BadRequest(result.Error.Message);
 
             }
             user.Photos.Remove(photo);
 
-            if(await _userService.SaveAllAsync()) return Ok();
-        
+            if (await _userService.SaveAllAsync()) return Ok();
+
             return BadRequest("Failed to delete the photo");
         }
     }
